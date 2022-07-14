@@ -19,6 +19,8 @@ import Home from "./modules/main/views/Home";
 import Borrowers from "./modules/user/views/Borrowers";
 import Borrower from "./modules/user/views/Borrower";
 import BorrowerLoans from "./modules/user/views/BorrowerLoans";
+import BorrowerLoan from "./modules/user/views/BorrowerLoan";
+import BorrowerLoanMovements from "./modules/user/views/BorrowerLoanMovements";
 
 export const GlobalContext = React.createContext();
 
@@ -49,6 +51,8 @@ const App = () => {
             <Route path="/borrowers" element={<Borrowers />} />
             <Route path="/borrowers/:authUid" element={<Borrower />} />
             <Route path="/borrowers/:authUid/loans" element={<BorrowerLoans />} />
+            <Route path="/borrowers/:authUid/loans/:loanUid" element={<BorrowerLoan />} />
+            <Route path="/borrowers/:authUid/loans/:loanUid/movements" element={<BorrowerLoanMovements />} />
           </Routes>
         </Content>
       </GlobalContext.Provider>

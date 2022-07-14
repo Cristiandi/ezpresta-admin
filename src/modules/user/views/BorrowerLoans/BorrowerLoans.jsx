@@ -19,8 +19,8 @@ import { GlobalContext } from "../../../../App.jsx";
 
 const headers = [
   {
-    key: "description",
-    header: "Descripción",
+    key: "amount",
+    header: "Monto",
   },
   {
     key: "minimumLoanPaymentAmount",
@@ -63,6 +63,7 @@ const BorrowerLoans = () => {
 
       return {
         ...row,
+        amount: formatCurrency(row?.amount),
         minimumLoanPaymentAmount: formatCurrency(row?.minimumLoanPaymentAmount),
         loanPaymentDate: formatDate(row?.loanPaymentDate),
         loanPaymentStatus: (
