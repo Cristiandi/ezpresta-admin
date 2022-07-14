@@ -57,6 +57,28 @@ class MovementService {
       };
     });
   }
+
+  async createPayment({ loanUid, amount, paymentDate }) {
+    const token = await getIdTokenFromCurrentUser();
+
+    const { data } = await axios({
+      url: `${environment.API_URL}movements/payment`,
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        loanUid,
+        amount,
+        paymentDate,
+      },
+    });
+
+    return {
+      ...data,
+      message: "Pago creado correctamente",
+    };
+  }
 }
 
 const movementService = new MovementService();
