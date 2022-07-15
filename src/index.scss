@@ -72,3 +72,14 @@ form .cds--inline-notification {
   text-align: center;
 }
 
+.screen__centered_button_container {
+  position: relative;
+}
+
+.screen__centered_button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+

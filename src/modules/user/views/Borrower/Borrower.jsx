@@ -100,9 +100,10 @@ const Borrower = () => {
                   </div>
                 </div>
               </div>
+              <div style={{ marginBottom: "1rem" }}>&nbsp;</div>
               <div style={{ marginBottom: "1rem" }}>
                 <div className="cds--row">
-                  <div className="cds--col">
+                  <div className="cds--col screen__centered_button_container">
                     <Button
                       kind="ghost"
                       size="sm"
@@ -110,11 +111,12 @@ const Borrower = () => {
                       iconDescription="Ver los préstamos"
                       renderIcon={View}
                       onClick={() => navigate(`/borrowers/${authUid}/loans`)}
+                      className="screen__centered_button"
                     >
                       Prestamos
                     </Button>
                   </div>
-                  <div className="cds--col">
+                  <div className="cds--col screen__centered_button_container">
                     <Button
                       kind="ghost"
                       size="sm"
@@ -124,6 +126,7 @@ const Borrower = () => {
                       onClick={() =>
                         navigate(`/borrowers/${authUid}/loan-requests`)
                       }
+                      className="screen__centered_button"
                     >
                       Solicitudes
                     </Button>

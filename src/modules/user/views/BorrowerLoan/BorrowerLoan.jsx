@@ -164,31 +164,44 @@ const BorrowerLoan = () => {
                   </div>
                 </div>
               </div>
+              <div style={{ marginBottom: "1rem" }}>&nbsp;</div>
               <div style={{ marginBottom: "1rem" }}>
-                <Button
-                  kind="ghost"
-                  size="sm"
-                  label="Ver movimientos"
-                  iconDescription="Ver movimientos"
-                  renderIcon={View}
-                  onClick={() =>
-                    navigate(`/borrowers/${authUid}/loans/${loanUid}/movements`)
-                  }
-                >
-                  Movimientos
-                </Button>
-                <Button
-                  kind="ghost"
-                  size="sm"
-                  label="Reportar pago"
-                  iconDescription="Reportar pago"
-                  renderIcon={Currency}
-                  onClick={() =>
-                    navigate(`/borrowers/${authUid}/loans/${loanUid}/report-payment`)
-                  }
-                >
-                  Pago
-                </Button>
+                <div className="cds--row">
+                  <div className="cds--col screen__centered_button_container">
+                    <Button
+                      kind="ghost"
+                      size="sm"
+                      label="Ver movimientos"
+                      iconDescription="Ver movimientos"
+                      renderIcon={View}
+                      onClick={() =>
+                        navigate(
+                          `/borrowers/${authUid}/loans/${loanUid}/movements`
+                        )
+                      }
+                      className="screen__centered_button"
+                    >
+                      Movimientos
+                    </Button>
+                  </div>
+                  <div className="cds--col screen__centered_button_container">
+                    <Button
+                      kind="ghost"
+                      size="sm"
+                      label="Reportar pago"
+                      iconDescription="Reportar pago"
+                      renderIcon={Currency}
+                      onClick={() =>
+                        navigate(
+                          `/borrowers/${authUid}/loans/${loanUid}/report-payment`
+                        )
+                      }
+                      className="screen__centered_button"
+                    >
+                      Pago
+                    </Button>
+                  </div>
+                </div>
               </div>
             </>
           )}
