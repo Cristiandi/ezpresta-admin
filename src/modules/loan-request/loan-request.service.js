@@ -19,7 +19,12 @@ class LoanRequestService {
       },
     });
 
-    return [...data];
+    return data.map(item => {
+      return {
+        ...item,
+        id: item.id + "",
+      };
+    });
   }
 
   async createLoanRequest({ userAuthUid, description, amount }) {

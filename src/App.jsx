@@ -16,12 +16,13 @@ import ResetPassword from "./modules/auth/views/ResetPassword";
 
 import Home from "./modules/main/views/Home";
 
-import Borrowers from "./modules/user/views/Borrowers";
-import Borrower from "./modules/user/views/Borrower";
-import BorrowerLoans from "./modules/user/views/BorrowerLoans";
-import BorrowerLoan from "./modules/user/views/BorrowerLoan";
-import BorrowerLoanMovements from "./modules/user/views/BorrowerLoanMovements";
-import BorrowerLoanPayment from "./modules/user/views/BorrowerLoanPayment";
+import Borrowers from "./modules/borrower/views/Borrowers";
+import Borrower from "./modules/borrower/views/Borrower";
+import BorrowerLoans from "./modules/borrower/views/BorrowerLoans";
+import BorrowerLoan from "./modules/borrower/views/BorrowerLoan";
+import BorrowerLoanMovements from "./modules/borrower/views/BorrowerLoanMovements";
+import BorrowerLoanPayment from "./modules/borrower/views/BorrowerLoanPayment";
+import BorrowerLoanRequests from "./modules/borrower/views/BorrowerLoanRequests";
 
 export const GlobalContext = React.createContext();
 
@@ -55,6 +56,7 @@ const App = () => {
             <Route path="/borrowers/:authUid/loans/:loanUid" element={<BorrowerLoan />} />
             <Route path="/borrowers/:authUid/loans/:loanUid/movements" element={<BorrowerLoanMovements />} />
             <Route path="/borrowers/:authUid/loans/:loanUid/report-payment" element={<BorrowerLoanPayment />} />
+            <Route path="/borrowers/:authUid/loan-requests" element={<BorrowerLoanRequests />} />
           </Routes>
         </Content>
       </GlobalContext.Provider>

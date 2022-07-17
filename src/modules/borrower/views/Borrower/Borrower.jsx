@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { InlineLoading, InlineNotification, Button } from "@carbon/react";
 import { View } from "@carbon/icons-react";
 
-import userService from "../../user.service";
+import userService from "../../../user/user.service";
 
 import { delay, getMessageFromAxiosError } from "../../../../utils";
 
