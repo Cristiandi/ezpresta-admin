@@ -102,6 +102,23 @@ class LoanRequestService {
       message: "Tú solicitud de préstamo ha sido eliminada",
     };
   }
+
+  async reviewLoanRequest({ loanRequestUid }) {
+    const token = await getIdTokenFromCurrentUser();
+
+    const { data } = await axios({
+      url: `${environment.API_URL}loan-requests/${loanRequestUid}/review`,
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return {
+      ...data,
+      message: "La solicitud de préstamo, se encuentra en revisión",
+    };
+  }
 }
 
 const loanRequestService = new LoanRequestService();
