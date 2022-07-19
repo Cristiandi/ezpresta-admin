@@ -119,6 +119,23 @@ class LoanRequestService {
       message: "La solicitud de préstamo, se encuentra en revisión",
     };
   }
+
+  async rejectLoanRequest({ loanRequestUid }) {
+    const token = await getIdTokenFromCurrentUser();
+
+    const { data } = await axios({
+      url: `${environment.API_URL}loan-requests/${loanRequestUid}/reject`,
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return {
+      ...data,
+      message: "La solicitud de préstamo, ha sido rechazada",
+    };
+  }
 }
 
 const loanRequestService = new LoanRequestService();

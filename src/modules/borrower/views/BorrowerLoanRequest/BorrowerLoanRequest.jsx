@@ -49,6 +49,10 @@ const BorrowerLoanRequest = () => {
   const [reviewError, setReviewError] = useState(undefined);
   const [reviewMessage, setReviewMessage] = useState(undefined);
 
+  const [wantToReject, setWantToReject] = useState(false);
+  const [rejectError, setRejectError] = useState(undefined);
+  const [rejectMessage, setRejectMessage] = useState(undefined);
+
   const ctx = useContext(GlobalContext);
   const navigate = useNavigate();
 
@@ -85,7 +89,7 @@ const BorrowerLoanRequest = () => {
     fetchLoanDetails({ loanRequestUid });
   }, [navigate, user, authUid, loanRequestUid]);
 
-  const handleRewviewLoanRequestClick = async (event) => {
+  const handleReviewLoanRequestClick = async (event) => {
     event.preventDefault();
 
     setWantToReview(false);
@@ -98,6 +102,22 @@ const BorrowerLoanRequest = () => {
       setReviewMessage(message);
     } catch (error) {
       setReviewError(getMessageFromAxiosError(error));
+    }
+  };
+
+  const handleRejectLoanRequestClick = async (event) => {
+    event.preventDefault();
+
+    setWantToReject(false);
+
+    try {
+      const { message } = await loanRequestService.rejectLoanRequest({
+        loanRequestUid,
+      });
+
+      setRejectMessage(message);
+    } catch (error) {
+      setRejectError(getMessageFromAxiosError(error));
     }
   };
 
@@ -178,7 +198,7 @@ const BorrowerLoanRequest = () => {
                       subtitle="Estas segur@?"
                       onClose={() => setWantToReview(false)}
                       actionButtonLabel="Continuar"
-                      onActionButtonClick={handleRewviewLoanRequestClick}
+                      onActionButtonClick={handleReviewLoanRequestClick}
                     />
                   </div>
                 )}
@@ -201,6 +221,40 @@ const BorrowerLoanRequest = () => {
                       subtitle={reviewMessage}
                       title="Cool!"
                       onClose={() => setReviewMessage(undefined)}
+                    />
+                  </div>
+                )}
+                {wantToReject && (
+                  <div style={{ marginBottom: "1rem" }}>
+                    <ActionableNotification
+                      kind="warning"
+                      title="Confirmación!"
+                      subtitle="Estas segur@?"
+                      onClose={() => setWantToReject(false)}
+                      actionButtonLabel="Continuar"
+                      onActionButtonClick={handleRejectLoanRequestClick}
+                    />
+                  </div>
+                )}
+                {rejectError && (
+                  <div style={{ marginBottom: "1rem" }}>
+                    <InlineNotification
+                      kind="error"
+                      iconDescription="close button"
+                      subtitle={<span>{rejectError}</span>}
+                      title="Uups!"
+                      onClose={() => setRejectError(undefined)}
+                    />
+                  </div>
+                )}
+                {rejectMessage && (
+                  <div style={{ marginBottom: "1rem" }}>
+                    <InlineNotification
+                      kind="success"
+                      icondescription="close button"
+                      subtitle={rejectMessage}
+                      title="Cool!"
+                      onClose={() => setRejectMessage(undefined)}
                     />
                   </div>
                 )}
@@ -227,11 +281,7 @@ const BorrowerLoanRequest = () => {
                         label="Rechazar solicitud"
                         iconDescription="Rechazar solicitud"
                         renderIcon={CloseOutline}
-                        onClick={() =>
-                          navigate(
-                            `/borrowers/${authUid}/loans/${loanRequestUid}/report-payment`
-                          )
-                        }
+                        onClick={() => setWantToReject(true)}
                         className="screen__centered_button"
                       >
                         Rechazar
