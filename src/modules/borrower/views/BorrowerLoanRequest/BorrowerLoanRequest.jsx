@@ -214,7 +214,7 @@ const BorrowerLoanRequest = () => {
                     </div>
                   </div>
                   <div className="cds--row">
-                    <div className="cds--col loan-details__tag_container">
+                    <div className="cds--col screen__tag_container">
                       <Tag
                         type={getTagType(loanRequestDetails?.status)}
                         size="md"

@@ -124,7 +124,7 @@ const BorrowerLoan = () => {
                   <div className="cds--col">
                     <p className="screen__label screen__text--center">Saldo</p>
                     <p className="screen__text--center">
-                      {formatCurrency(loanDetails?.totalLoanAmount)}
+                      <strong>{formatCurrency(loanDetails?.totalLoanAmount)}</strong>
                     </p>
                   </div>
                 </div>
@@ -134,7 +134,7 @@ const BorrowerLoan = () => {
                       Tasa efectiva mensual
                     </p>
                     <p className="screen__text--center">
-                      <strong>{loanDetails.monthlyInterestRate * 100}%</strong>
+                      <strong>{(loanDetails.monthlyInterestRate * 100).toFixed(2)} %</strong>
                     </p>
                   </div>
                   <div className="cds--col">
@@ -143,13 +143,13 @@ const BorrowerLoan = () => {
                     </p>
                     <p className="screen__text--center">
                       <strong>
-                        {loanDetails.monthlyInterestOverdueRate * 100}%
+                        {(loanDetails.monthlyInterestOverdueRate * 100).toFixed(2)} %
                       </strong>
                     </p>
                   </div>
                 </div>
                 <div className="cds--row">
-                  <div className="cds--col loan-details__tag_container">
+                  <div className="cds--col screen__tag_container">
                     <Tag
                       type={
                         loanDetails.loanPaymentStatus === "atrasado"
