@@ -136,6 +136,23 @@ class LoanRequestService {
       message: "La solicitud de préstamo, ha sido rechazada",
     };
   }
+
+  async approveLoanRequest({ loanRequestUid }) {
+    const token = await getIdTokenFromCurrentUser();
+
+    const { data } = await axios({
+      url: `${environment.API_URL}loan-requests/${loanRequestUid}/approve`,
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return {
+      ...data,
+      message: "La solicitud de préstamo, ha sido aprobada",
+    };
+  }
 }
 
 const loanRequestService = new LoanRequestService();

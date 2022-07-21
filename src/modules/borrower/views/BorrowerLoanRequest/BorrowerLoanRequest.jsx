@@ -28,7 +28,7 @@ const getTagType = (status) => {
     case "CREADA":
       return "gray";
     case "REVISION":
-      return "yellow";
+      return "high-contrast";
     case "RECHAZADA":
       return "red";
     case "APROBADA":
@@ -52,6 +52,12 @@ const BorrowerLoanRequest = () => {
   const [wantToReject, setWantToReject] = useState(false);
   const [rejectError, setRejectError] = useState(undefined);
   const [rejectMessage, setRejectMessage] = useState(undefined);
+
+  const [wantToApprove, setWantToApprove] = useState(false);
+  const [approveError, setApproveError] = useState(undefined);
+  const [approveMessage, setApproveMessage] = useState(undefined);
+
+  const [buttonsDisabled, setButtonsDisabled] = useState(false);
 
   const ctx = useContext(GlobalContext);
   const navigate = useNavigate();
@@ -93,6 +99,7 @@ const BorrowerLoanRequest = () => {
     event.preventDefault();
 
     setWantToReview(false);
+    setButtonsDisabled(true);
 
     try {
       const { message } = await loanRequestService.reviewLoanRequest({
@@ -103,12 +110,15 @@ const BorrowerLoanRequest = () => {
     } catch (error) {
       setReviewError(getMessageFromAxiosError(error));
     }
+
+    setButtonsDisabled(false);
   };
 
   const handleRejectLoanRequestClick = async (event) => {
     event.preventDefault();
 
     setWantToReject(false);
+    setButtonsDisabled(true);
 
     try {
       const { message } = await loanRequestService.rejectLoanRequest({
@@ -119,6 +129,31 @@ const BorrowerLoanRequest = () => {
     } catch (error) {
       setRejectError(getMessageFromAxiosError(error));
     }
+
+    setButtonsDisabled(false);
+  };
+
+  const handleApproveLoanRequestClick = async (event) => {
+    event.preventDefault();
+
+    setWantToApprove(false);
+    setButtonsDisabled(true);
+
+    try {
+      const { message } = await loanRequestService.approveLoanRequest({
+        loanRequestUid,
+      });
+
+      setApproveMessage(message);
+    } catch (error) {
+      setApproveError(getMessageFromAxiosError(error));
+    }
+
+    setButtonsDisabled(false);
+  };
+
+  const getButtonsDisabled = () => {
+    return wantToApprove || wantToReject || wantToReview || buttonsDisabled;
   };
 
   return (
@@ -136,7 +171,7 @@ const BorrowerLoanRequest = () => {
             />
           )}
           {loanRequestDetailsError && (
-            <div style={{ marginBottom: "1rem" }}>
+            <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
               <InlineNotification
                 kind="error"
                 iconDescription="close button"
@@ -191,7 +226,7 @@ const BorrowerLoanRequest = () => {
                   </div>
                 </div>
                 {wantToReview && (
-                  <div style={{ marginBottom: "1rem" }}>
+                  <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                     <ActionableNotification
                       kind="warning"
                       title="Confirmación!"
@@ -199,11 +234,12 @@ const BorrowerLoanRequest = () => {
                       onClose={() => setWantToReview(false)}
                       actionButtonLabel="Continuar"
                       onActionButtonClick={handleReviewLoanRequestClick}
+                      onCloseButtonClick={() => setWantToReview(false)}
                     />
                   </div>
                 )}
                 {reviewError && (
-                  <div style={{ marginBottom: "1rem" }}>
+                  <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                     <InlineNotification
                       kind="error"
                       iconDescription="close button"
@@ -214,7 +250,7 @@ const BorrowerLoanRequest = () => {
                   </div>
                 )}
                 {reviewMessage && (
-                  <div style={{ marginBottom: "1rem" }}>
+                  <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                     <InlineNotification
                       kind="success"
                       icondescription="close button"
@@ -225,7 +261,7 @@ const BorrowerLoanRequest = () => {
                   </div>
                 )}
                 {wantToReject && (
-                  <div style={{ marginBottom: "1rem" }}>
+                  <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                     <ActionableNotification
                       kind="warning"
                       title="Confirmación!"
@@ -233,11 +269,12 @@ const BorrowerLoanRequest = () => {
                       onClose={() => setWantToReject(false)}
                       actionButtonLabel="Continuar"
                       onActionButtonClick={handleRejectLoanRequestClick}
+                      onCloseButtonClick={() => setWantToReject(false)}
                     />
                   </div>
                 )}
                 {rejectError && (
-                  <div style={{ marginBottom: "1rem" }}>
+                  <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                     <InlineNotification
                       kind="error"
                       iconDescription="close button"
@@ -248,13 +285,48 @@ const BorrowerLoanRequest = () => {
                   </div>
                 )}
                 {rejectMessage && (
-                  <div style={{ marginBottom: "1rem" }}>
+                  <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                     <InlineNotification
                       kind="success"
                       icondescription="close button"
                       subtitle={rejectMessage}
                       title="Cool!"
                       onClose={() => setRejectMessage(undefined)}
+                    />
+                  </div>
+                )}
+                {wantToApprove && (
+                  <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
+                    <ActionableNotification
+                      kind="warning"
+                      title="Confirmación!"
+                      subtitle="Estas segur@?"
+                      onClose={() => setWantToReject(false)}
+                      actionButtonLabel="Continuar"
+                      onActionButtonClick={handleApproveLoanRequestClick}
+                      onCloseButtonClick={() => setWantToApprove(false)}
+                    />
+                  </div>
+                )}
+                {approveError && (
+                  <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
+                    <InlineNotification
+                      kind="error"
+                      iconDescription="close button"
+                      subtitle={<span>{approveError}</span>}
+                      title="Uups!"
+                      onClose={() => setApproveError(undefined)}
+                    />
+                  </div>
+                )}
+                {approveMessage && (
+                  <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
+                    <InlineNotification
+                      kind="success"
+                      icondescription="close button"
+                      subtitle={approveMessage}
+                      title="Cool!"
+                      onClose={() => setApproveMessage(undefined)}
                     />
                   </div>
                 )}
@@ -267,9 +339,10 @@ const BorrowerLoanRequest = () => {
                         size="sm"
                         label="Revisar solicitud"
                         iconDescription="Revisar solicitud"
+                        className="screen__centered_button"
                         renderIcon={Search}
                         onClick={() => setWantToReview(true)}
-                        className="screen__centered_button"
+                        disabled={getButtonsDisabled()}
                       >
                         Revisar
                       </Button>
@@ -280,9 +353,10 @@ const BorrowerLoanRequest = () => {
                         size="sm"
                         label="Rechazar solicitud"
                         iconDescription="Rechazar solicitud"
+                        className="screen__centered_button"
                         renderIcon={CloseOutline}
                         onClick={() => setWantToReject(true)}
-                        className="screen__centered_button"
+                        disabled={getButtonsDisabled()}
                       >
                         Rechazar
                       </Button>
@@ -293,13 +367,10 @@ const BorrowerLoanRequest = () => {
                         size="sm"
                         label="Aprobar solicitud"
                         iconDescription="Aprobar solicitud"
-                        renderIcon={CheckmarkOutline}
-                        onClick={() =>
-                          navigate(
-                            `/borrowers/${authUid}/loans/${loanRequestUid}/report-payment`
-                          )
-                        }
                         className="screen__centered_button"
+                        renderIcon={CheckmarkOutline}
+                        onClick={() => setWantToApprove(true)}
+                        disabled={getButtonsDisabled()}
                       >
                         Aprobar
                       </Button>

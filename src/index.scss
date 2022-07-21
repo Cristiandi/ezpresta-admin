@@ -83,3 +83,9 @@ form .cds--inline-notification {
   transform: translate(-50%, -50%);
 }
 
+.screen__notification_container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+

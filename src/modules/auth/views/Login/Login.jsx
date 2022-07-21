@@ -103,7 +103,7 @@ const Login = () => {
             </div>
 
             {loginError && (
-              <div style={{ marginBottom: "1rem" }}>
+              <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                 <InlineNotification
                   kind="error"
                   iconDescription="close button"

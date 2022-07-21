@@ -202,7 +202,7 @@ const Register = () => {
             </div>
 
             {registerError && (
-              <div style={{ marginBottom: "1rem" }}>
+              <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                 <InlineNotification
                   kind="error"
                   iconDescription="close button"
@@ -214,7 +214,7 @@ const Register = () => {
             )}
 
             {registerMessage && (
-              <div style={{ marginBottom: "1rem" }}>
+              <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                 <InlineNotification
                   kind="success"
                   iconDescription="close button"

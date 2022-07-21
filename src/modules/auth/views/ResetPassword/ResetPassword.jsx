@@ -64,7 +64,7 @@ const ResetPassword = () => {
             </div>
 
             {resetPasswordEmailError && (
-              <div>
+              <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                 <InlineNotification
                   kind="error"
                   iconDescription="close button"
@@ -76,7 +76,7 @@ const ResetPassword = () => {
             )}
 
             {resetPasswordEmailMessage && (
-              <div>
+              <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
                 <InlineNotification
                   kind="success"
                   iconDescription="close button"
