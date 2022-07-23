@@ -2,6 +2,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { InlineLoading, InlineNotification, Button } from "@carbon/react";
 import { ChevronRight } from "@carbon/icons-react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 import loanService from "../../../loan/loan.service";
 
@@ -9,6 +19,7 @@ import {
   delay,
   getMessageFromAxiosError,
   formatCurrency,
+  monthNumberToMonthName,
 } from "../../../../utils";
 
 import { GlobalContext } from "../../../../App.jsx";
@@ -28,10 +39,25 @@ const greet = () => {
   }
 };
 
+const getLoanAmountsChartItems = (items) => {
+  return items.map((item) => {
+    return {
+      month: monthNumberToMonthName(item.month) + " - " + (item.year + "").slice(2),
+      Monto: item.amount,
+    };
+  });
+};
+
 const Home = () => {
   const [overviewInfo, setOverviewInfo] = useState(undefined);
-  const [overviewInfoLoading, setOverviewInfoLoading] = useState(true);
+  const [overviewInfoLoading, setOverviewInfoLoading] = useState(false);
   const [overviewInfoError, setOverviewInfoError] = useState(undefined);
+
+  const [loansAmountsByMonth, setLoansAmountsByMonth] = useState([]);
+  const [loansAmountsByMonthLoading, setLoansAmountsByMonthLoading] =
+    useState(false);
+  const [loansAmountsByMonthError, setLoansAmountsByMonthError] =
+    useState(undefined);
 
   const ctx = useContext(GlobalContext);
   const navigate = useNavigate();
@@ -56,12 +82,30 @@ const Home = () => {
     setOverviewInfoLoading(false);
   };
 
+  const fetchLoansAmountsByMonth = async () => {
+    setLoansAmountsByMonthLoading(true);
+
+    try {
+      const [data] = await Promise.all([
+        loanService.getLoansAmountsByMonth(),
+        delay(),
+      ]);
+
+      setLoansAmountsByMonth(getLoanAmountsChartItems(data));
+    } catch (error) {
+      setLoansAmountsByMonthError(getMessageFromAxiosError(error));
+    }
+
+    setLoansAmountsByMonthLoading(false);
+  };
+
   useEffect(() => {
     if (!user) {
       return navigate("/");
     }
 
     fetchOverviewInfo();
+    fetchLoansAmountsByMonth();
   }, [navigate, user]);
 
   return (
@@ -78,7 +122,10 @@ const Home = () => {
               />
             )}
             {overviewInfoError && (
-              <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
+              <div
+                style={{ marginBottom: "1rem" }}
+                className="screen__notification_container"
+              >
                 <InlineNotification
                   kind="error"
                   subtitle={<span>{overviewInfoError}</span>}
@@ -135,6 +182,75 @@ const Home = () => {
                 </div>
               </>
             )}
+            {loansAmountsByMonthLoading && (
+              <InlineLoading
+                status="active"
+                description="Cargando..."
+                className={"center-screen"}
+              />
+            )}
+            {loansAmountsByMonthError && (
+              <div
+                style={{ marginBottom: "1rem" }}
+                className="screen__notification_container"
+              >
+                <InlineNotification
+                  kind="error"
+                  subtitle={<span>{loansAmountsByMonthError}</span>}
+                  title="Uups!"
+                  onClose={() => setLoansAmountsByMonthError(undefined)}
+                />
+              </div>
+            )}
+            {!loansAmountsByMonthLoading &&
+              !loansAmountsByMonthError &&
+              loansAmountsByMonth && (
+                <>
+                  <div style={{ marginBottom: "1rem" }}>
+                    <div className="cds--row">
+                      <div className="cds--col">
+                        <p className="screen__label screen__text--center">
+                          Prestado por mes:
+                        </p>
+                        <ResponsiveContainer width="100%" height={300}>
+                          <LineChart
+                            width={500}
+                            height={300}
+                            data={loansAmountsByMonth}
+                            margin={{
+                              top: 5,
+                              right: 30,
+                              left: 20,
+                              bottom: 5,
+                            }}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="month" />
+                            <YAxis
+                              tickFormatter={(value) =>
+                                new Intl.NumberFormat("es-CO", {
+                                  notation: "compact",
+                                  compactDisplay: "short",
+                                }).format(value)
+                              }
+                            />
+                            <Tooltip
+                              formatter={(value) => formatCurrency(value)}
+                            />
+                            <Legend />
+                            <Line
+                              type="monotone"
+                              dataKey="Monto"
+                              stroke="#8884d8"
+                              activeDot={{ r: 8 }}
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
           </div>
         </div>
       </div>

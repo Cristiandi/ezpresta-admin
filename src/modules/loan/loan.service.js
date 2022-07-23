@@ -160,6 +160,20 @@ class LoanService {
       };
     });
   }
+
+  async getLoansAmountsByMonth() {
+    const token = await getIdTokenFromCurrentUser();
+
+    const { data } = await axios({
+      url: `${environment.API_URL}loans/admin/loan-amounts-by-month`,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data;
+  }
 }
 
 const loanService = new LoanService();

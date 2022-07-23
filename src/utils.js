@@ -4,6 +4,8 @@ import environment from "./environment";
 
 import firebaseApp from "./firebase";
 
+/** FIREBASE RELATED */
+
 export const setFirebaseProviderId = (value = "") => {
   localStorage.setItem("firebaseProviderId", value);
 };
@@ -28,26 +30,9 @@ export const getIdTokenFromCurrentUser = async () => {
   return token;
 };
 
-export const delay = (ms) => {
-  const timeToWait = ms || parseInt(environment.DELAY_TIME, 10);
+/** FIREBASE RELATED */
 
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeToWait);
-  });
-};
-
-// function to capitalize first letter of string
-export const capitalizeFirstLetter = (value = "") => {
-  return value.charAt(0).toUpperCase() + value.slice(1);
-};
-
-// function to format currency
-export const formatCurrency = (value = 0) => {
-  return new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-  }).format(value);
-};
+/** DATE RELATED */
 
 // function to format date
 export const formatDate = (value = "") => {
@@ -74,18 +59,6 @@ export const formatDateTime = (value = "") => {
   });
 };
 
-export const getMessageFromAxiosError = (error) => {
-  if (error.response) {
-    const { data } = error.response;
-
-    if (data && data.message) {
-      return data.message;
-    }
-  }
-
-  return "Something went wrong";
-};
-
 export const addDays = (date = new Date(), days = 0) => {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
@@ -110,6 +83,21 @@ export const subtractMinutes = (date = new Date(), minutes = 0) => {
   return result;
 };
 
+export const monthNumberToMonthName = (monthNumber = 0) => {
+  const date = new Date();
+  date.setMonth(monthNumber - 1);
+
+  const monthName = capitalizeFirstLetter(date.toLocaleString("es-CO", {
+    month: "short",
+  }));
+
+  return monthName;
+};
+
+/** DATE RELATED */
+
+/** EPAYCO RELATED */
+
 export const calculateEpaycoFee = (value = 0) => {
   return value * 0.03 + 900;
 };
@@ -119,6 +107,35 @@ export const shouldUseEpayco = (value = 0) => {
   const fractionValue = value * 0.1;
 
   return epaycoFee < fractionValue;
+};
+
+/** EPAYCO RELATED */
+
+/** OTHERS */
+
+export const delay = (ms) => {
+  const timeToWait = ms || parseInt(environment.DELAY_TIME, 10);
+
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeToWait);
+  });
+};
+
+export const getMessageFromAxiosError = (error) => {
+  if (error.response) {
+    const { data } = error.response;
+
+    if (data && data.message) {
+      return data.message;
+    }
+  }
+
+  return "something went wrong";
+};
+
+// function to capitalize first letter of string
+export const capitalizeFirstLetter = (value = "") => {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
 export const buildWhatsappLinkForCoordinationPaymentMessage = ({
@@ -135,3 +152,13 @@ export const buildWhatsappLinkForCoordinationPaymentMessage = ({
     message
   )}`;
 };
+
+// function to format currency
+export const formatCurrency = (value = 0) => {
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+  }).format(value);
+};
+
+/** OTHERS */
