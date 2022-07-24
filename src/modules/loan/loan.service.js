@@ -161,11 +161,25 @@ class LoanService {
     });
   }
 
-  async getLoansAmountsByMonth() {
+  async getTotalBorrowedPerMonth() {
     const token = await getIdTokenFromCurrentUser();
 
     const { data } = await axios({
-      url: `${environment.API_URL}loans/admin/loan-amounts-by-month`,
+      url: `${environment.API_URL}loans/admin/total-borrowed-per-month`,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data;
+  }
+
+  async getTotalByTypes() {
+    const token = await getIdTokenFromCurrentUser();
+
+    const { data } = await axios({
+      url: `${environment.API_URL}loans/admin/total-by-types`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
