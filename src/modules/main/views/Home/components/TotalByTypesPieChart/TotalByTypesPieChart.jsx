@@ -9,9 +9,9 @@ import {
   Sector,
 } from "recharts";
 
-import loanService from "../../modules/loan/loan.service";
+import loanService from "../../../../../../modules/loan/loan.service";
 
-import { delay, getMessageFromAxiosError, formatCurrency } from "../../utils";
+import { delay, getMessageFromAxiosError, formatCurrency } from "../../../../../../utils";
 
 const TotalByTypesPieChart = () => {
   const [totalByTypes, setTotalByTypes] = useState([]);
