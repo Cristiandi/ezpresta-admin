@@ -85,7 +85,7 @@ const BorrowerLoanPayment = () => {
       document.getElementById("amount").value = "";
       setAmount(undefined);
     } catch (error) {
-      setReportPaymentError(getMessageFromAxiosError(error.message));
+      setReportPaymentError(getMessageFromAxiosError(error));
     }
 
     setReportPaymentLoading(false);
