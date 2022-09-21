@@ -188,6 +188,31 @@ class LoanService {
 
     return data;
   }
+
+  async createLoan({ userAuthUid, amount, monthlyInterestRate, monthlyInterestOverdueRate, startDate, description }) {
+    const token = await getIdTokenFromCurrentUser();
+
+    const { data } = await axios({
+      url: `${environment.API_URL}loans`,
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        userAuthUid,
+        amount,
+        monthlyInterestRate,
+        monthlyInterestOverdueRate,
+        startDate,
+        description,
+      },
+    });
+
+    return {
+      ...data,
+      message: "Préstamo creado exitosamente",
+    };
+  }
 }
 
 const loanService = new LoanService();

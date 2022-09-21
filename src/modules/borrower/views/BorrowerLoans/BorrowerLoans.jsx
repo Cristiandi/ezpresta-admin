@@ -5,12 +5,18 @@ import {
   InlineNotification,
   IconButton,
   Pagination,
+  Button,
 } from "@carbon/react";
 import { View } from "@carbon/icons-react";
 
 import loanService from "../../../loan/loan.service";
 
-import { delay, getMessageFromAxiosError, formatCurrency, formatDate } from "../../../../utils";
+import {
+  delay,
+  getMessageFromAxiosError,
+  formatCurrency,
+  formatDate,
+} from "../../../../utils";
 
 import BackButton from "../../../../components/BackButton";
 import AppDataTable from "../../../../components/AppDataTable";
@@ -122,7 +128,10 @@ const BorrowerLoans = () => {
             />
           )}
           {loansError && (
-            <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
+            <div
+              style={{ marginBottom: "1rem" }}
+              className="screen__notification_container"
+            >
               <InlineNotification
                 kind="error"
                 iconDescription="close button"
@@ -134,6 +143,17 @@ const BorrowerLoans = () => {
           )}
           {!loansLoading && !loansError && loans && (
             <>
+              <div style={{ marginBottom: "1rem" }}>
+                <Button
+                  kind="ghost"
+                  size="sm"
+                  label="Crear prestamo"
+                  iconDescription="Crear prestamo"
+                  onClick={() => navigate(`/borrowers/${authUid}/loans/create`)}
+                >
+                  Crear prestamo
+                </Button>
+              </div>
               <AppDataTable
                 title={"Lista"}
                 description={"de los prestamos"}
