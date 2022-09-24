@@ -10,7 +10,7 @@ import {
 } from "@carbon/react";
 
 import movementService from "../../../movement/movement.service";
-import { getMessageFromAxiosError } from "../../../../utils";
+import { getMessageFromAxiosError, formatCurrency } from "../../../../utils";
 
 import BackButton from "../../../../components/BackButton";
 
@@ -62,7 +62,7 @@ const BorrowerLoanPayment = () => {
       return;
     }
     setInvalidPaymentDate(false);
-    
+
     const parsedPaymentDate = new Date(paymentDateValue);
 
     const isoPaymentDate = parsedPaymentDate.toISOString();
@@ -105,7 +105,9 @@ const BorrowerLoanPayment = () => {
                 invalid={invalidAmount}
                 invalidText="Valor inválido"
                 onChange={(event) => setAmount(event.target.value)}
+                autoComplete="off"
               />
+              <p>{formatCurrency(amount)}</p>
             </div>
             <div style={{ marginBottom: "1rem" }}>
               <DatePicker dateFormat="m/d/Y" datePickerType="single">
@@ -118,11 +120,15 @@ const BorrowerLoanPayment = () => {
                   invalidText="Valor inválido"
                   // onChange={(event) => { console.log("event", event); setPaymentDate(event.target.value);}}
                   // onClose={(event) => { console.log("event", event); setPaymentDate(event.target.value);}}
+                  autoComplete="off"
                 />
               </DatePicker>
             </div>
             {reportPaymentError && (
-              <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
+              <div
+                style={{ marginBottom: "1rem" }}
+                className="screen__notification_container"
+              >
                 <InlineNotification
                   kind="error"
                   subtitle={<span>{reportPaymentError}</span>}
@@ -132,7 +138,10 @@ const BorrowerLoanPayment = () => {
               </div>
             )}
             {reportPaymentMessage && (
-              <div style={{ marginBottom: "1rem" }} className="screen__notification_container">
+              <div
+                style={{ marginBottom: "1rem" }}
+                className="screen__notification_container"
+              >
                 <InlineNotification
                   kind="success"
                   subtitle={<span>{reportPaymentMessage}</span>}

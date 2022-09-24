@@ -10,7 +10,7 @@ import {
 } from "@carbon/react";
 
 import loanService from "../../../loan/loan.service";
-import { getMessageFromAxiosError } from "../../../../utils";
+import { getMessageFromAxiosError, formatCurrency } from "../../../../utils";
 
 import BackButton from "../../../../components/BackButton";
 
@@ -135,7 +135,9 @@ const BorrowerLoanCreate = () => {
                 invalid={invalidAmount}
                 invalidText="Valor inválido"
                 onChange={(event) => setAmount(event.target.value)}
+                autoComplete="off"
               />
+              <p>{formatCurrency(amount)}</p>
             </div>
             <div style={{ marginBottom: "1rem" }}>
               <TextInput
@@ -144,6 +146,7 @@ const BorrowerLoanCreate = () => {
                 invalid={invalidMonthlyInterestRate}
                 invalidText="Valor inválido"
                 onChange={(event) => setMonthlyInterestRate(event.target.value)}
+                autoComplete="off"
               />
             </div>
             <div style={{ marginBottom: "1rem" }}>
@@ -153,6 +156,7 @@ const BorrowerLoanCreate = () => {
                 invalid={invalidMonthlyInterestOverdueRate}
                 invalidText="Valor inválido"
                 onChange={(event) => setMonthlyInterestOverdueRate(event.target.value)}
+                autoComplete="off"
               />
             </div>
             <div style={{ marginBottom: "1rem" }}>
@@ -166,6 +170,7 @@ const BorrowerLoanCreate = () => {
                   invalidText="Valor inválido"
                   // onChange={(event) => { console.log("event", event); setPaymentDate(event.target.value);}}
                   // onClose={(event) => { console.log("event", event); setPaymentDate(event.target.value);}}
+                  autoComplete="off"
                 />
               </DatePicker>
             </div>
@@ -176,6 +181,7 @@ const BorrowerLoanCreate = () => {
                 invalid={invalidDescription}
                 invalidText="Valor inválido"
                 onChange={(event) => setDescription(event.target.value)}
+                autoComplete="off"
               />
             </div>
             {createLoanError && (
