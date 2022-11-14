@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Content, Theme } from "@carbon/react";
+import { Content, Theme, InlineLoading } from "@carbon/react";
 import { Routes, Route } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import "./app.scss";
 
 import firebaseApp from "./firebase";
+
+import { delay } from "./utils";
 
 import AppHeader from "./components/AppHeader";
 
@@ -30,39 +32,77 @@ export const GlobalContext = React.createContext();
 
 const App = () => {
   const [user, setUser] = useState(undefined);
+  const [loading, setLoading] = useState(true);
 
   const auth = getAuth(firebaseApp);
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
+
+    delay(500).then(() => {
+      setLoading(false);
+    });
   });
 
   return (
     <>
       <GlobalContext.Provider value={{ user }}>
-        <Theme theme="g100">
-          <AppHeader />
-        </Theme>
-        <Content>
-          <Routes>
-            <Route path="/" element={<Landing />} />
+        {loading && (
+          <InlineLoading
+            status="active"
+            iconDescription="Active loading indicator"
+            description="Cargando..."
+            className={"center-screen"}
+          />
+        )}
+        {!loading && user !== undefined && (
+          <>
+            <Theme theme="g100">
+              <AppHeader />
+            </Theme>
+            <Content>
+              <Routes>
+                <Route path="/" element={<Landing />} />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
 
-            <Route path="/home" element={<Home />} />
+                <Route path="/home" element={<Home />} />
 
-            <Route path="/borrowers" element={<Borrowers />} />
-            <Route path="/borrowers/:authUid" element={<Borrower />} />
-            <Route path="/borrowers/:authUid/loans" element={<BorrowerLoans />} />
-            <Route path="/borrowers/:authUid/loans/create" element={<BorrowerLoanCreate />} />
-            <Route path="/borrowers/:authUid/loans/:loanUid" element={<BorrowerLoan />} />
-            <Route path="/borrowers/:authUid/loans/:loanUid/movements" element={<BorrowerLoanMovements />} />
-            <Route path="/borrowers/:authUid/loans/:loanUid/report-payment" element={<BorrowerLoanPayment />} />
-            <Route path="/borrowers/:authUid/loan-requests" element={<BorrowerLoanRequests />} />
-            <Route path="/borrowers/:authUid/loan-requests/:loanRequestUid" element={<BorrowerLoanRequest />} />
-          </Routes>
-        </Content>
+                <Route path="/borrowers" element={<Borrowers />} />
+                <Route path="/borrowers/:authUid" element={<Borrower />} />
+                <Route
+                  path="/borrowers/:authUid/loans"
+                  element={<BorrowerLoans />}
+                />
+                <Route
+                  path="/borrowers/:authUid/loans/create"
+                  element={<BorrowerLoanCreate />}
+                />
+                <Route
+                  path="/borrowers/:authUid/loans/:loanUid"
+                  element={<BorrowerLoan />}
+                />
+                <Route
+                  path="/borrowers/:authUid/loans/:loanUid/movements"
+                  element={<BorrowerLoanMovements />}
+                />
+                <Route
+                  path="/borrowers/:authUid/loans/:loanUid/report-payment"
+                  element={<BorrowerLoanPayment />}
+                />
+                <Route
+                  path="/borrowers/:authUid/loan-requests"
+                  element={<BorrowerLoanRequests />}
+                />
+                <Route
+                  path="/borrowers/:authUid/loan-requests/:loanRequestUid"
+                  element={<BorrowerLoanRequest />}
+                />
+              </Routes>
+            </Content>
+          </>
+        )}
       </GlobalContext.Provider>
     </>
   );
