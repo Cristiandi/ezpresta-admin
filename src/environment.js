@@ -1,4 +1,5 @@
 const environment = {
+  /* GENERAL */
   API_URL: process.env.REACT_APP_API_URL,
   SELF_URL: process.env.REACT_APP_SELF_URL,
   CRISTIANDI_PHONE_NUMBER: process.env.REACT_APP_CRISTIANDI_PHONE_NUMBER,
